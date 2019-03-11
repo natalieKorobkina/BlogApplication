@@ -1,0 +1,32 @@
+﻿@model AddUpdateBlogViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<h2>Add Post</h2>
+
+<form method="post">
+    @Html.ValidationSummary(false)
+
+    <div class="form-group">
+        @Html.LabelFor(input => input.Title, "Post title:")
+        @Html.TextBoxFor(input => input.Title, new { @class = "form-control", placeholder = "Post title" })
+        @Html.ValidationMessageFor(input => input.Title)
+    </div>
+    <div class="form-group">
+        <label for="Body">Body:</label>
+        @Html.LabelFor(input => input.Body, "Post content:")
+        @Html.TextBoxFor(input => input.Body, new { @class = "form-control", placeholder = "Content" })
+        @Html.ValidationMessageFor(input => input.Body)
+
+    </div>
+    <div class="">
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+
+</form>

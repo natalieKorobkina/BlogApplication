@@ -1,0 +1,44 @@
+﻿@model PostDetailsViewModel
+
+@{
+    ViewBag.Title = "PostDetails";
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+    <script src="~/Scripts/CreateUpdatePost.js"></script>
+}
+<!--Show post-->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="post-preview">
+                <h2 class="post-title">
+                    @Model.Title
+                </h2>
+                @if (Model.DateCreated != Model.DateUpdated)
+                {
+                    <p class="post-meta">
+                        Updated by @Model.UserName
+                        on @Model.DateUpdated.ToString("dd/MM/yyyy HH:mm")
+                    </p>
+                }
+                else
+                {
+                    <p class="post-meta">
+                        Posted by @Model.UserName
+                        on @Model.DateCreated.ToString("dd/MM/yyyy HH:mm")
+                    </p>
+                }
+                <p>
+                    @Html.Raw(Model.Body)
+                </p>
+                <img class="img-thumbnail" src="@Url.Content(Model.MediaUrl)" />
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,70 @@
+﻿@model List<IndexBlogViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<!-- Main Content -->
+<ul class="list-unstyled list-inline list-btn">
+    <li>
+        <a class="btn btn-primary" href="@Url.Action("Create", "Home")">
+            Add new post <i class="fas fa-plus"></i>
+        </a>
+    </li>
+</ul>
+
+
+<!--Show posts-->
+@if (Model == null || !Model.Any())
+{
+
+    <div style="margin-top:15px;">
+        <p><strong>We do not have posts yet</strong></p>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                @foreach (var record in Model)
+                {
+                <div class="post-preview">
+                    <a href="@Url.Action("BlogDetails", "Home", new { id = record.Id })">
+                        <h2 class="post-title">
+                            @record.Title
+                        </h2>
+                    </a>
+                    <p class="post-meta">
+                        Posted by
+                        <a href="#">@record.UserName</a>
+                        on @record.DateCreated
+                    </p>
+                    @if (User.IsInRole("Admin"))
+                    {
+                    <ul class="list-unstyled list-inline list-btn">
+                        <li>
+                            
+                                <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Home", new { id = record.Id })" >Edit</a>
+                           
+                        </li>
+                        <li>
+                                <a href="@Url.Action("Delete", "Home", new { id = record.Id })" class="btn btn-outline-primary">Delete</a>
+                          
+                        </li>
+                    </ul>
+                        
+                    }
+                </div>
+                    
+                 <hr>
+                }
+                <!-- Pager -->
+                <div class="clearfix">
+                    <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

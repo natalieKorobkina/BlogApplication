@@ -1,0 +1,47 @@
+﻿@model AddUpdateBlogViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+    <script src="~/Scripts/CreateUpdatePost.js"></script>
+}
+<h2>Add Post</h2>
+
+<form method="post" enctype="multipart/form-data">
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(input => input.Title, "Post title:")
+        @Html.TextBoxFor(input => input.Title, new { @class = "form-control", placeholder = "Post title" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(input => input.Body, "Post content:")
+        @Html.TextAreaFor(input => input.Body, new { @class = "form-control", placeholder = "Content", rows = 15, columns = 5 })
+    </div>
+    <div class="form-group">
+        <input type="file" name="Media" />
+    </div>
+    <div class="form-group">
+        <label for="Published">Published:</label>
+        <div class="row">
+            <div class="col-md-12">
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(input => input.Published, false, new { @checked = "checked" }) No
+                </label>
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(input => input.Published, true) Yes
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+
+</form>
+
