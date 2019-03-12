@@ -18,6 +18,11 @@
     <div class="form-group">
         @Html.LabelFor(input => input.Title, "Post title:")
         @Html.TextBoxFor(input => input.Title, new { @class = "form-control", placeholder = "Post title" })
+        @Html.ValidationMessageFor(i => i.Title)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(input => input.SubTitle, "Post subtitle:")
+        @Html.TextBoxFor(input => input.SubTitle, new { @class = "form-control", placeholder = "Post subtitle" })
     </div>
     <div class="form-group">
         @Html.LabelFor(input => input.Body, "Post content:")
@@ -26,6 +31,15 @@
     <div class="form-group">
         <input type="file" name="Media" />
     </div>
+    @if (Model != null && Model.MediaUrl != null)
+    {
+        @Html.LabelFor(input => input.MediaUrl, "Previously uploaded picture:")
+        <div class="row">
+            <div class="col-sm-2">
+                <img class="card-img-top" src="@Url.Content(Model.MediaUrl)" />
+            </div>
+        </div>
+    }
     <div class="form-group">
         <label for="Published">Published:</label>
         <div class="row">
@@ -39,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div class="">
+    <div class="form-group">
         <button type="submit" class="btn btn-default">Submit</button>
     </div>
 

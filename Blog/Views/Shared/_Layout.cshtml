@@ -32,7 +32,6 @@
                 </ul>
                 @Html.Partial("_LoginPartial")
 
-
             </div>
         </div>
     </nav>
@@ -44,14 +43,19 @@
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto">
                     <div class="site-heading">
-                        <h1>BLOG APP</h1>
+                        @if (@ViewContext.RouteData.Values["action"].ToString() == "Index")
+                        {
+                            <h1>All Posts</h1> }
+                        else
+                        {
+                            <h1>@ViewContext.RouteData.Values["action"].ToString()</h1>
+                        }
                         <span class="subheading">using ASP.NET MVC 5</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
-
 
     <div class="container body-content">
         @RenderBody()

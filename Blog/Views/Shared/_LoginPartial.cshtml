@@ -7,7 +7,7 @@
 
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink(User.Identity.GetUserName().Split('@')[0], "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
         <li class="nav-item"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>

@@ -13,6 +13,7 @@ namespace Blog.Models.Domain
         public string UserId { get; set; }
 
         public string Title { get; set; }
+        public string SubTitle { get; set; }
         public string Body { get; set; }
         public bool Published { get; set; }
         public DateTime DateCreated { get; set; }

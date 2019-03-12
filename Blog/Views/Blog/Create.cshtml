@@ -20,6 +20,10 @@
         @Html.TextBoxFor(input => input.Title, new { @class = "form-control", placeholder = "Post title" })
     </div>
     <div class="form-group">
+        @Html.LabelFor(input => input.SubTitle, "Post subtitle:")
+        @Html.TextBoxFor(input => input.SubTitle, new { @class = "form-control", placeholder = "Post subtitle" })
+    </div>
+    <div class="form-group">
         @Html.LabelFor(input => input.Body, "Post content:")
         @Html.TextAreaFor(input => input.Body, new { @class = "form-control", placeholder = "Content", rows = 15, columns = 5 })
     </div>

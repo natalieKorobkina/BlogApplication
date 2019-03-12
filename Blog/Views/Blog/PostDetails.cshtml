@@ -18,26 +18,33 @@
                 <h2 class="post-title">
                     @Model.Title
                 </h2>
+                <h3 class="post-subtitle">
+                    @Model.SubTitle
+                </h3>
                 @if (Model.DateCreated != Model.DateUpdated)
                 {
                     <p class="post-meta">
-                        Updated by @Model.UserName
+                        Updated by @Model.UserName.Split('@')[0]
                         on @Model.DateUpdated.ToString("dd/MM/yyyy HH:mm")
                     </p>
                 }
                 else
                 {
                     <p class="post-meta">
-                        Posted by @Model.UserName
+                        Posted by @Model.UserName.Split('@')[0]
                         on @Model.DateCreated.ToString("dd/MM/yyyy HH:mm")
                     </p>
                 }
                 <p>
                     @Html.Raw(Model.Body)
                 </p>
-                <img class="img-thumbnail" src="@Url.Content(Model.MediaUrl)" />
+                @if (@Model.MediaUrl != null)
+                {
+                    <img class="img-thumbnail" src="@Url.Content(Model.MediaUrl)" />
+                }
             </div>
             <hr>
+            @Html.ActionLink("Back to List", "Index")
         </div>
     </div>
 </div>

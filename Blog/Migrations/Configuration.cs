@@ -27,11 +27,8 @@ namespace Blog.Migrations
 
             foreach (var account in Accounts)
             {
-                //RoleManager, used to manage roles
                 var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
 
-                //UserManager, used to manage users
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
                 //Add a role if it doesn't exist.
                 if (!context.Roles.Any(p => p.Name == account.Role))
                 {
@@ -40,6 +37,8 @@ namespace Blog.Migrations
                 }
 
                 //Creating the user with this role
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
                 ApplicationUser userToCreate;
 
                 if (!context.Users.Any(p => p.UserName == account.UserName))

@@ -9,6 +9,7 @@ namespace Blog.Models.ViewModels
     public class PostDetailsViewModel
     {
         public string Title { get; set; }
+        public string SubTitle { get; set; }
 
         [AllowHtml]
         public string Body { get; set; }
