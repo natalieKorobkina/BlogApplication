@@ -4,6 +4,9 @@
     ViewBag.Title = "Index";
 }
 
+@section scripts {
+    <script src="~/Scripts/scriptAction.js" type="text/javascript"></script>
+}
 
 <!-- Main Content -->
 <div class="container">
@@ -57,8 +60,12 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <div class="btn-group" role="group">
-                                    <a href="@Url.Action("Update", "Blog", new { id = record.Id })" class="btn btn-light action">Update</a>
-                                    <a href="@Url.Action("Delete", "Blog", new { id = record.Id })" class="btn btn-light action">Delete</a>
+                                    <form action="@Url.Action("Update", "Blog", new { id = record.Id })">
+                                        <a href="#" class="btn btn-light actionEdit">Update</a>
+                                    </form>
+                                    <form method="post" action="@Url.Action("Delete", "Blog", new { id = record.Id })">
+                                        <a href="#" class="btn btn-light actionDelete">Delete</a>
+                                    </form>
                                 </div>
                             }
                         </div>

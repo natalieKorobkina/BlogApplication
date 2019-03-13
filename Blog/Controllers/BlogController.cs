@@ -172,7 +172,7 @@ namespace Blog.Controllers
             return RedirectToAction(nameof(BlogController.Index));
         }
 
-        //[HttpPost]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
