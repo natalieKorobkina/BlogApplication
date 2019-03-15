@@ -29,6 +29,9 @@
                     <li class="nav-item">
                         @Html.ActionLink("Blogs", "Index", "Blog")
                     </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Contact", "Contact", "Home")
+                    </li>
                 </ul>
                 @Html.Partial("_LoginPartial")
 
@@ -43,6 +46,7 @@
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto">
                     <div class="site-heading">
+                        @ViewBag.Message
                         @if (@ViewContext.RouteData.Values["action"].ToString() == "Index")
                         {
                             <h1>All Posts</h1> }

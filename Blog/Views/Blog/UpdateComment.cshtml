@@ -1,0 +1,33 @@
+﻿@model AddUpdateCommentViewModel
+
+@{
+    ViewBag.Title = "UpdateComment";
+}
+
+<h2>Edit comment and provide reason</h2>
+<!-- comments form-->
+<div class="comment-form">
+    <form method="post">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(input => input.Body, "Comment: ")
+                    @Html.TextAreaFor(input => input.Body, new { @class = "form-control", placeholder = "Comment", rows = 4, columns = 3 })
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(input => input.EditReason, "Reason for editing: ")
+                    @Html.TextAreaFor(input => input.EditReason, new { @class = "form-control", placeholder = "Reason", rows = 2, columns = 1 })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <button type="submit" class="btn btn-dark"><i class="fas fa-comment-alt"></i>Post comment</button>
+            </div>
+        </div>
+    </form>
+    <a href="@Url.Action("Index", "Blog")" class="btn btn-light">Back to List</a>
+</div>
+

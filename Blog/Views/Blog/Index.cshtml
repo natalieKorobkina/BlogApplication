@@ -9,6 +9,15 @@
 }
 
 <!-- Main Content -->
+<!--Search -->
+@using (Html.BeginForm())
+{
+    <p>
+        Title: @Html.TextBox("SearchString") <br />
+        <input type="submit" value="Filter" />
+    </p>
+}
+
 <div class="container">
     @if (User.IsInRole("Admin"))
     {
@@ -21,13 +30,7 @@
         </ul>
     }
     <!--Show all posts-->
-    @if (!Model.Any())
-    {
-        <div style="margin-top:15px;">
-            <p><strong>We do not have posts yet</strong></p>
-        </div>
-    }
-    else
+    @if (Model != null || Model.Any())
     {
         <div class="container">
             <div class="row">
@@ -35,7 +38,7 @@
                     @foreach (var record in Model)
                     {
                         <div class="post-preview">
-                            <a href="@Url.Action("PostDetails", "Blog", new { id = record.Id })">
+                            <a href="@Url.Action("PostDetails", "Blog", new { slug = record.Slug })">
                                 <h2 class="post-title">
                                     @record.Title
                                 </h2>

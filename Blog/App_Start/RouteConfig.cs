@@ -13,6 +13,15 @@ namespace Blog
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapMvcAttributeRoutes();
+
+            //Another way of handling custom routes, in case I will need this in future
+            //routes.MapRoute(
+            //    name: "MyMovieRoute",
+            //    url: "mymovies/{name}",
+            //    defaults: new { controller = "Movie", action = "DetailsByName" }
+            //);
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

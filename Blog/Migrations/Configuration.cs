@@ -59,7 +59,9 @@ namespace Blog.Migrations
                 {
                     userManager.AddToRole(userToCreate.Id, account.Role);
                 }
-            }   
+            }
+
+            context.SaveChanges();
         }
     }
 }

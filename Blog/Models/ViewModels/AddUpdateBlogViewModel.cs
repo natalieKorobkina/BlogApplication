@@ -16,6 +16,7 @@ namespace Blog.Models.ViewModels
         [Required(ErrorMessage = "Please, enter subtitle.")]
         public string SubTitle { get; set; }
 
+        [Required(ErrorMessage = "Please, enter content.")]
         [AllowHtml]
         public string Body { get; set; }
 
