@@ -12,22 +12,24 @@
 <!--Search -->
 @using (Html.BeginForm())
 {
-    <p>
-        Title: @Html.TextBox("SearchString") <br />
-        <input type="submit" value="Filter" />
-    </p>
+    <div class="input-group md-form form-sm form-2 pl-0">
+        @Html.TextBox("SearchString", null, new { @class = "form-control my-0 py-1 red-border", @placeholder = "Search" })
+        <div class="input-group-append">
+            <button class="input-group-text red lighten-3" id="basic-text1" type="submit">
+                <i class="fas fa-search text-grey" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
 }
-
+<br />
 <div class="container">
     @if (User.IsInRole("Admin"))
     {
-        <ul class="list-unstyled list-inline list-btn">
-            <li>
-                <a class="btn btn-dark" href="@Url.Action("Create", "Blog")">
-                    Add new post <i class="fas fa-plus"></i>
-                </a>
-            </li>
-        </ul>
+        <div class="list-unstyled list-inline list-btn">
+            <a class="btn btn-dark" href="@Url.Action("Create", "Blog")">
+                Add new post <i class="fas fa-plus-circle"></i>
+            </a>
+        </div>
     }
     <!--Show all posts-->
     @if (Model != null || Model.Any())
@@ -37,41 +39,45 @@
                 <div class="col-lg-8 col-md-10 mx-auto">
                     @foreach (var record in Model)
                     {
-                        <div class="post-preview">
-                            <a href="@Url.Action("PostDetails", "Blog", new { slug = record.Slug })">
-                                <h2 class="post-title">
-                                    @record.Title
-                                </h2>
-                                <h3 class="post-subtitle">
-                                    @record.SubTitle
-                                </h3>
-                            </a>
-                            @if (record.DateCreated != record.DateUpdated)
-                            {
-                                <p class="post-meta">
-                                    Updated by @record.UserName.Split('@')[0]
-                                    on @record.DateUpdated.ToString("MMMM dd, yyyy HH:mm")
-                                </p>
-                            }
-                            else
-                            {
-                                <p class="post-meta">
-                                    Posted by @record.UserName.Split('@')[0]
-                                    on @record.DateCreated.ToString("MMMM dd, yyyy HH:mm")
-                                </p>
-                            }
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <div class="btn-group" role="group">
-                                    <form action="@Url.Action("Update", "Blog", new { id = record.Id })">
-                                        <a href="#" class="btn btn-light actionEdit">Update</a>
-                                    </form>
-                                    <form method="post" action="@Url.Action("Delete", "Blog", new { id = record.Id })">
-                                        <a href="#" class="btn btn-light actionDelete">Delete</a>
-                                    </form>
-                                </div>
-                            }
-                        </div>
+                    <div class="post-preview">
+                        <a href="@Url.Action("PostDetails", "Blog", new { slug = record.Slug })">
+                            <h2 class="post-title">
+                                @record.Title
+                            </h2>
+                            <h3 class="post-subtitle">
+                                @record.SubTitle
+                            </h3>
+                        </a>
+                        @if (@record.MediaUrl != null)
+                        {
+                            <img class="img-thumbnail" src="@Url.Content(record.MediaUrl)" />
+                        }
+                        @if (record.DateCreated != record.DateUpdated)
+                        {
+                            <p class="post-meta">
+                                Updated by @record.UserName.Split('@')[0]
+                                <i class="far fa-clock"></i> @record.DateUpdated.ToString("MMMM dd, yyyy HH:mm")
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="post-meta">
+                                Posted by @record.UserName.Split('@')[0]
+                                <i class="far fa-clock"></i> @record.DateCreated.ToString("MMMM dd, yyyy HH:mm")
+                            </p>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="btn-group" role="group">
+                                <form action="@Url.Action("Update", "Blog", new { id = record.Id })">
+                                    <a href="#" class="btn btn-light actionEdit">Update <i class="fas fa-edit"></i></a>
+                                </form>
+                                <form method="post" action="@Url.Action("Delete", "Blog", new { id = record.Id })">
+                                    <a href="#" class="btn btn-light actionDelete">Delete <i class="fas fa-minus-circle"></i></a>
+                                </form>
+                            </div>
+                        }
+                    </div>
                         <hr>
                     }
                 </div>

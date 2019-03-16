@@ -10,6 +10,7 @@
     <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
     <script src="~/Scripts/CreateUpdatePost.js"></script>
 }
+
 <!--Show post-->
 <div class="container">
     <div class="row">
@@ -18,21 +19,21 @@
                 <h2 class="post-title">
                     @Model.Title
                 </h2>
-                <h3 class="post-subtitle">
+                <h4 class="post-subtitle">
                     @Model.SubTitle
-                </h3>
+                </h4>
                 @if (Model.DateCreated != Model.DateUpdated)
                 {
                     <p class="post-meta">
                         Updated by @Model.UserName.Split('@')[0]
-                        on @Model.DateUpdated.ToString("dd/MM/yyyy HH:mm")
+                        on @Model.DateUpdated.ToString("MMMM dd, yyyy HH:mm")
                     </p>
                 }
                 else
                 {
                     <p class="post-meta">
                         Posted by @Model.UserName.Split('@')[0]
-                        on @Model.DateCreated.ToString("dd/MM/yyyy HH:mm")
+                        on @Model.DateCreated.ToString("MMMM dd, yyyy HH:mm")
                     </p>
                 }
                 <p>
@@ -48,33 +49,42 @@
             @if (Model.Comments.Count() != 0)
             {
                 <div class="comments">
-                    <h5>Comments: @Model.Comments.Count()</h5>
+                    <h5><i>Comments: @Model.Comments.Count()</i></h5>
                 </div>
+
+
+
                 foreach (var comment in Model.Comments)
                 {
-                    <div class="row comment">
-                        <div class="col-sm-9 col-md-10">
-                            <h6>@comment.User.UserName</h6>
-                            <p class="posted"><i class="fas fa-clock-o">@comment.DateCreated</i> </p>
-                            <p class="text-gray">@comment.Body</p>
+
+                    <div class="row">
+                        <div class="col-sm-9 col-md-10 list-group-item list-group-item-secondary">
+                            <div class="text-black-50 ">
+                                <i class="fas fa-user"></i> @comment.User.UserName.Split('@')[0]
+                                <i class="fas fa-clock"></i> @comment.DateCreated.ToString("MMMM dd, yyyy HH:mm")
+                            </div>
+                            <div>@comment.Body</div>
                         </div>
                     </div>
                     if (User.IsInRole("Admin") | User.IsInRole("Moderator"))
                     {
-                    <a class="btn btn-light" href="@Url.Action("UpdateComment", "Blog", new { id = comment.Id, postId = Model.Id })">
-                        Edit comment <i class="fas fa-comment-alt"></i></a>
-                    <a class="btn btn-light" href="@Url.Action("DeleteComment", "Blog", new { id = comment.Id, postId = Model.Id })">
-                        Delete comment <i class="fas fa-comment-alt"></i>
-                    </a>
+                        <a class="btn btn-light" href="@Url.Action("UpdateComment", "Blog", new { id = comment.Id, postId = Model.Id })">
+                            Edit comment <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-light" href="@Url.Action("DeleteComment", "Blog", new { id = comment.Id, postId = Model.Id })">
+                            Delete comment <i class="fas fa-minus-circle"></i>
+                        </a>
                     }
+                    <br />
                 }
             }
-
-            <a class="btn btn-dark" href="@Url.Action("CreateComment", "Blog", new { id = Model.Id })">
-                Add new comment <i class="fas fa-comment-alt"></i>
-            </a>
-
-            <a href="@Url.Action("Index", "Blog")" class="btn btn-light">Back to List</a>
+            <div>
+                <a class="btn btn-light" href="@Url.Action("CreateComment", "Blog", new { id = Model.Id })">
+                    Add new comment <i class="fas fa-comment-alt"></i>
+                </a>
+            </div>
+            <br />
+            <div><a href="@Url.Action("Index", "Blog")" class="btn btn-dark">Back to List</a></div>
         </div>
     </div>
 </div>

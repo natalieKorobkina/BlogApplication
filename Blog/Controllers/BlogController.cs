@@ -38,7 +38,8 @@ namespace Blog.Controllers
                 DateUpdated = p.DateUpdated,
                 UserName = p.User.UserName,
                 Published = p.Published,
-                Slug = p.Slug
+                Slug = p.Slug,
+                MediaUrl = p.MediaUrl
             }).ToList();
 
             var filteredModel = model.FindAll(p => p.Published == true);
