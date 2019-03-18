@@ -1,17 +1,32 @@
 ﻿@{
     ViewBag.Title = "Contact";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<link href="~/css/contact.css" rel="stylesheet" type="text/css">
 
-<address>
+<h2>@ViewBag.Title.</h2>
+@*<h3>@ViewBag.Message</h3>*@
+
+@*<address>
     One Microsoft Way<br />
     Redmond, WA 98052-6399<br />
     <abbr title="Phone">P:</abbr>
     425.555.0100
-</address>
+</address>*@
 
-<address>
+<section class="fourth">
+    <div class="contact-form">
+        <form id="frm">
+            <h4>Send me a message:</h4>
+            <input class="input-box" id="name" placeholder="Name" type="text" value="" required>
+            <input class="input-box" id="email" placeholder="Email address" type="email" value="" required>
+            <input class="input-box" id="subject" placeholder="Subject" type="text" value="" required>
+            <textarea class="input-box" id="text" placeholder="Message" rows="8" cols="32" required></textarea>
+            <button class="send" id="btn-send">Send</button>
+        </form>
+    </div>
+</section>
+
+@*<address>
     <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
     <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+</address>*@

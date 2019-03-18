@@ -4,13 +4,6 @@
     ViewBag.Title = "PostDetails";
 }
 
-@section scripts{
-    @Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
-    <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
-    <script src="~/Scripts/CreateUpdatePost.js"></script>
-}
-
 <!--Show post-->
 <div class="container">
     <div class="row">
@@ -52,40 +45,67 @@
                     <h5><i>Comments: @Model.Comments.Count()</i></h5>
                 </div>
 
-
-
                 foreach (var comment in Model.Comments)
                 {
 
                     <div class="row">
                         <div class="col-sm-9 col-md-10 list-group-item list-group-item-secondary">
-                            <div class="text-black-50 ">
-                                <i class="fas fa-user"></i> @comment.User.UserName.Split('@')[0]
-                                <i class="fas fa-clock"></i> @comment.DateCreated.ToString("MMMM dd, yyyy HH:mm")
-                            </div>
+                            @if (@comment.DateCreated != @comment.DateUpdated)
+                            {
+                                <div class="text-black-50 ">
+                                    <i class="fas fa-user"></i>Edited by @comment.User.UserName.Split('@')[0]
+                                    <i class="fas fa-clock"></i> @comment.DateCreated.ToString("MMMM dd, yyyy HH:mm")
+                                </div>
+                                if (@comment.EditReason != null && (User.IsInRole("Admin") | User.IsInRole("Moderator")))
+                                {
+                                    <div class="text-danger">Reason of editing: @comment.EditReason</div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="text-black-50 ">
+                                    <i class="fas fa-user"></i>Posted by @comment.User.UserName.Split('@')[0]
+                                    <i class="fas fa-clock"></i> @comment.DateCreated.ToString("MMMM dd, yyyy HH:mm")
+                                </div>
+                            }
                             <div>@comment.Body</div>
+                            @if (User.IsInRole("Admin") | User.IsInRole("Moderator"))
+                            {
+                            <div>
+                                <a class="btn btn-light" href="@Url.Action("UpdateComment", "Blog", new { id = comment.Id, postId = Model.Id })">
+                                    Edit comment <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn btn-light" href="@Url.Action("DeleteComment", "Blog", new { id = comment.Id, postId = Model.Id })">
+                                    Delete comment <i class="fas fa-minus-circle"></i>
+                                </a>
+                            </div>
+                            }
                         </div>
                     </div>
-                    if (User.IsInRole("Admin") | User.IsInRole("Moderator"))
-                    {
-                        <a class="btn btn-light" href="@Url.Action("UpdateComment", "Blog", new { id = comment.Id, postId = Model.Id })">
-                            Edit comment <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-light" href="@Url.Action("DeleteComment", "Blog", new { id = comment.Id, postId = Model.Id })">
-                            Delete comment <i class="fas fa-minus-circle"></i>
-                        </a>
-                    }
                     <br />
                 }
             }
-            <div>
-                <a class="btn btn-light" href="@Url.Action("CreateComment", "Blog", new { id = Model.Id })">
-                    Add new comment <i class="fas fa-comment-alt"></i>
-                </a>
-            </div>
-            <br />
-            <div><a href="@Url.Action("Index", "Blog")" class="btn btn-dark">Back to List</a></div>
         </div>
     </div>
 </div>
-
+<!-- comments form-->
+<div class="comment-form">
+    <form method="post" action="@Url.Action("PostDetails", "Blog", new { id = Model.Id })">
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    @Html.LabelFor(input => input.CommentBody, "Leave your comment: ")
+                    @Html.TextAreaFor(input => input.CommentBody, new { @class = "form-control", placeholder = "Comment", rows = 2, columns = 2 })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <button type="submit" class="btn btn-light"><i class="fas fa-comment-alt"></i>Post comment</button>
+            </div>
+        </div>
+    </form>
+    <br />
+    <div><a href="@Url.Action("Index", "Blog")" class="btn btn-dark">Back to List</a></div>
+</div>

@@ -57,6 +57,8 @@ namespace Blog.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            ViewBag.Message = "Log In";
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -139,6 +141,7 @@ namespace Blog.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.Message = "Register";
             return View();
         }
 
@@ -391,6 +394,7 @@ namespace Blog.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            ViewBag.Message = "Log Off";
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Blog");
         }

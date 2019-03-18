@@ -1,6 +1,7 @@
 ﻿using Blog.Models.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,6 +13,7 @@ namespace Blog.Models.ViewModels
         public int Id { get; set; }
         public string Title { get; set; }
         public string SubTitle { get; set; }
+        public string Slug { get; set; }
 
         [AllowHtml]
         public string Body { get; set; }
@@ -21,5 +23,11 @@ namespace Blog.Models.ViewModels
         public string MediaUrl { get; set; }
 
         public List<Comment> Comments { get; set; }
+
+        [Required(ErrorMessage = "Please, enter your comment.")]
+        public string CommentBody { get; set; }
+        public DateTime CommentDateCreated { get; set; }
+        public DateTime CommentDateUpdated { get; set; }
+        public string CommentEditReason { get; set; }
     }
 }

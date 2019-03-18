@@ -13,7 +13,7 @@ namespace Blog.Models.Domain
         public string UserId { get; set; }
 
         public virtual Post Post { get; set; }
-        public string PostId { get; set; }
+        public int PostId { get; set; }
 
         public string Body { get; set; }
         public DateTime DateCreated { get; set; }

@@ -382,7 +382,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\SeededAccount.cs" />
-    <Compile Include="Models\ViewModels\AddUpdateCommentViewModel.cs" />
+    <Compile Include="Models\ViewModels\EditCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\AddUpdateBlogViewModel.cs" />
     <Compile Include="Models\ViewModels\PostDetailsViewModel.cs" />
     <Compile Include="Models\ViewModels\IndexBlogViewModel.cs" />
@@ -396,6 +396,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="css\clean-blog.css" />
     <Content Include="css\clean-blog.min.css" />
+    <Content Include="css\contact.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -2191,6 +2192,7 @@
     <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="Views\Blog\CreateComment.cshtml" />
     <Content Include="Views\Blog\UpdateComment.cshtml" />
+    <Content Include="Views\Shared\AddCommentForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
