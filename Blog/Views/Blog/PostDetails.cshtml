@@ -56,9 +56,9 @@
                                     <i class="fas fa-user"></i>Edited by @comment.User.UserName.Split('@')[0]
                                     <i class="fas fa-clock"></i> @comment.DateCreated.ToString("MMMM dd, yyyy HH:mm")
                                 </div>
-                                if (@comment.EditReason != null && (User.IsInRole("Admin") | User.IsInRole("Moderator")))
+                                if (@comment.UpdatedReason != null && (User.IsInRole("Admin") | User.IsInRole("Moderator")))
                                 {
-                                    <div class="text-danger">Reason of editing: @comment.EditReason</div>
+                                    <div class="text-danger">Reason of editing: @comment.UpdatedReason</div>
                                 }
                             }
                             else
@@ -90,7 +90,7 @@
 </div>
 <!-- comments form-->
 <div class="comment-form">
-    <form method="post" action="@Url.Action("PostDetails", "Blog", new { id = Model.Id })">
+    <form method="post">
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
         <div class="row">
             <div class="col-sm-12">

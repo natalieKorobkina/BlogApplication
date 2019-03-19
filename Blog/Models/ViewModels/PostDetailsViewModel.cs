@@ -24,7 +24,7 @@ namespace Blog.Models.ViewModels
 
         public List<Comment> Comments { get; set; }
 
-        [Required(ErrorMessage = "Please, enter your comment.")]
+        [Required(ErrorMessage = "Please, enter your comment before posting.")]
         public string CommentBody { get; set; }
         public DateTime CommentDateCreated { get; set; }
         public DateTime CommentDateUpdated { get; set; }

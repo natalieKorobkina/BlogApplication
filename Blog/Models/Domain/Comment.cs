@@ -18,7 +18,7 @@ namespace Blog.Models.Domain
         public string Body { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
-        public string EditReason { get; set; }
+        public string UpdatedReason { get; set; }
 
         public Comment()
         {

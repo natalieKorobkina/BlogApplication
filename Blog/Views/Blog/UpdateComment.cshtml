@@ -8,6 +8,7 @@
 <!-- comments form-->
 <div class="comment-form">
     <form method="post">
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
@@ -24,10 +25,10 @@
         </div>
         <div class="row">
             <div class="form-group">
-                <button type="submit" class="btn btn-dark"><i class="fas fa-comment-alt"></i>Post comment</button>
+                <button type="submit" class="btn btn-light"><i class="fas fa-comment-alt"></i>Post comment</button>
             </div>
         </div>
     </form>
-    <a href="@Url.Action("Index", "Blog")" class="btn btn-light">Back to List</a>
+    <a href="@Url.Action("Index", "Blog")" class="btn btn-dark">Back to List</a>
 </div>
 

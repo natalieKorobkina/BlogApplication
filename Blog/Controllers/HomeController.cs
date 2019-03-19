@@ -17,9 +17,21 @@ namespace Blog.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult Contact()
         {
             ViewBag.Message = "Contact";
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Contact(ContactViewModel formData)
+        {
+            var email = new EmailService();
+
+            email.Send("natalie888@mail.ru", formData.Message, formData.Subject);
+            ModelState.Clear();
 
             return View();
         }

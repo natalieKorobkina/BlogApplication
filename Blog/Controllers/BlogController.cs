@@ -47,9 +47,7 @@ namespace Blog.Controllers
             var currentUser = User.Identity.GetUserId();
 
             if (currentUser == null)
-            {
                 return View(searchString, filteredModel);
-            }
 
             if (!userManager.IsInRole(currentUser, "admin"))
                 return View(searchString, filteredModel);
@@ -227,6 +225,11 @@ namespace Blog.Controllers
         {
             ViewBag.Message = "Post Details";
 
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             if (!string.IsNullOrWhiteSpace(slug))
             {
                 var post = DbContext.Posts.FirstOrDefault(p => p.Slug == slug);
@@ -257,25 +260,45 @@ namespace Blog.Controllers
         [Route("blog/{slug}")]
         public ActionResult PostDetails(string slug, PostDetailsViewModel formData)
         {
-            //any error with any property
-            if (!ModelState.IsValid)
+            if (!String.IsNullOrEmpty(slug))
             {
-                return View();
+                var post = DbContext.Posts.FirstOrDefault(p => p.Slug == slug);
+
+                if (post != null)
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        var model = new PostDetailsViewModel();
+
+                        model.Title = post.Title;
+                        model.SubTitle = post.SubTitle;
+                        model.Body = post.Body;
+                        model.UserName = post.User.UserName;
+                        model.DateCreated = post.DateCreated;
+                        model.DateUpdated = post.DateUpdated;
+                        model.MediaUrl = post.MediaUrl;
+                        model.Comments = post.Comments;
+                        model.Slug = post.Slug;
+
+                        return View(model);
+                    }
+                        
+                    Comment comment;
+                    var userId = User.Identity.GetUserId();
+
+                    comment = new Comment();
+                    comment.UserId = userId;
+                    comment.Body = formData.CommentBody;
+                    DbContext.Comments.Add(comment);
+                    post.Comments.Add(comment);
+
+                    DbContext.SaveChanges();
+
+                    return RedirectToAction(nameof(BlogController.PostDetails));
+                }
             }
 
-            Comment comment;
-            var userId = User.Identity.GetUserId();
-            var post = DbContext.Posts.FirstOrDefault(p => p.Id == formData.Id);
-
-            comment = new Comment();
-            comment.UserId = userId;
-            comment.Body = formData.CommentBody;
-            DbContext.Comments.Add(comment);
-            post.Comments.Add(comment);
-
-            DbContext.SaveChanges();
-
-            return RedirectToAction(nameof(BlogController.PostDetails), routeValues: new { slug = post.Slug });
+            return RedirectToAction(nameof(BlogController.Index));
         }
 
         [HttpGet]
@@ -293,10 +316,11 @@ namespace Blog.Controllers
                     var model = new EditCommentViewModel();
 
                     model.Body = comment.Body;
+                    model.EditReason = comment.UpdatedReason;
 
                     if (model.EditReason != null)
                     {
-                        model.EditReason = comment.EditReason;
+                        model.EditReason = comment.UpdatedReason;
                     }
 
                     return View(model);
@@ -323,48 +347,7 @@ namespace Blog.Controllers
             comment.UserId = userId;
             comment.Body = formData.Body;
             comment.DateUpdated = DateTime.Now;
-            comment.EditReason = formData.EditReason;
-
-            DbContext.SaveChanges();
-
-            return RedirectToAction(nameof(BlogController.PostDetails), routeValues: new { slug = post.Slug });
-        }
-
-        private ActionResult AddUpdateComment(int? id, int? postId, EditCommentViewModel formData)
-        {
-            //any error with any property
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            Comment comment;
-            var userId = User.Identity.GetUserId();
-            var post = DbContext.Posts.FirstOrDefault(p => p.Id == postId);
-            // add branch
-            if (!id.HasValue)
-            {
-                comment = new Comment();
-                comment.UserId = userId;
-                DbContext.Comments.Add(comment);
-                post.Comments.Add(comment);
-            }
-            //update branch
-            else
-            {
-                comment = DbContext.Comments.FirstOrDefault(p => p.Id == id);
-
-                if (comment == null)
-                {
-                    return RedirectToAction(nameof(BlogController.Index));
-                }
-
-                comment.UserId = userId;
-                comment.DateUpdated = DateTime.Now;
-                comment.EditReason = formData.EditReason;
-            }
-
-            comment.Body = formData.Body;
+            comment.UpdatedReason = formData.EditReason;
 
             DbContext.SaveChanges();
 
