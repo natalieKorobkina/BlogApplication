@@ -340,7 +340,6 @@ namespace Blog.Controllers
             return RedirectToAction(nameof(BlogController.PostDetails), routeValues: new { slug = post.Slug });
         }
 
-        //[HttpPost]
         [Authorize(Roles = "Admin, Moderator")]
         public ActionResult DeleteComment(int? id, int? postId)
         {

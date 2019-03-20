@@ -43,7 +43,7 @@ namespace Blog.Models.Domain
             var slug = Regex.Replace(post.Title, @"[^0-9A-Za-z ,]", "").Replace(" ", "-").ToLower();
             var slugExists = DbContext.Posts.FirstOrDefault(p => p.Slug == slug);
 
-            if (slugExists != null)
+            if (slugExists != null || slug == "")
             {
                 slug = slug + "-" + Random.Next(1, 10001);
             }
