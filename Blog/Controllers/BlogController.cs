@@ -42,17 +42,15 @@ namespace Blog.Controllers
                 MediaUrl = p.MediaUrl
             }).ToList();
 
+            // filter for non-admins
             var filteredModel = model.FindAll(p => p.Published == true);
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
             var currentUser = User.Identity.GetUserId();
+  
+            if (currentUser != null && userManager.IsInRole(currentUser, "admin"))
+                return Search(searchString, model);
 
-            if (currentUser == null)
-                return View(searchString, filteredModel);
-
-            if (!userManager.IsInRole(currentUser, "admin"))
-                return View(searchString, filteredModel);
-
-            return Search(searchString, model);
+            return Search(searchString, filteredModel);
         }
 
         private ActionResult Search(string searchString, List<IndexBlogViewModel> listForSearch)
@@ -60,16 +58,11 @@ namespace Blog.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 var lowerCaseSearch = searchString.ToLower();
-                var serchedList = listForSearch.FindAll(p => p.Title.ToLower().Contains(lowerCaseSearch) ||
+                var searchedList = listForSearch.FindAll(p => p.Title.ToLower().Contains(lowerCaseSearch) ||
                 p.Slug.ToLower().Contains(lowerCaseSearch) ||
                 p.Body.ToLower().Contains(lowerCaseSearch));
 
-                if (serchedList.Count() == 0)
-                {
-                    return View();
-                }
-
-                return View(serchedList);
+                return View(searchedList);
             }
 
             return View(listForSearch);
@@ -236,20 +229,7 @@ namespace Blog.Controllers
 
                 if (post != null)
                 {
-                    var model = new PostDetailsViewModel();
-
-                    model.Id = post.Id;
-                    model.Title = post.Title;
-                    model.SubTitle = post.SubTitle;
-                    model.Body = post.Body;
-                    model.UserName = post.User.UserName;
-                    model.DateCreated = post.DateCreated;
-                    model.DateUpdated = post.DateUpdated;
-                    model.MediaUrl = post.MediaUrl;
-                    model.Comments = post.Comments;
-                    model.Slug = post.Slug;
-
-                    return View(model);
+                    return GetPost(post);
                 }
             }
             return RedirectToAction(nameof(BlogController.Index));
@@ -268,21 +248,9 @@ namespace Blog.Controllers
                 {
                     if (!ModelState.IsValid)
                     {
-                        var model = new PostDetailsViewModel();
-
-                        model.Title = post.Title;
-                        model.SubTitle = post.SubTitle;
-                        model.Body = post.Body;
-                        model.UserName = post.User.UserName;
-                        model.DateCreated = post.DateCreated;
-                        model.DateUpdated = post.DateUpdated;
-                        model.MediaUrl = post.MediaUrl;
-                        model.Comments = post.Comments;
-                        model.Slug = post.Slug;
-
-                        return View(model);
+                        return GetPost(post);
                     }
-                        
+
                     Comment comment;
                     var userId = User.Identity.GetUserId();
 
@@ -299,6 +267,24 @@ namespace Blog.Controllers
             }
 
             return RedirectToAction(nameof(BlogController.Index));
+        }
+
+        private ActionResult GetPost(Post post)
+        {
+            var model = new PostDetailsViewModel();
+
+            model.Id = post.Id;
+            model.Title = post.Title;
+            model.SubTitle = post.SubTitle;
+            model.Body = post.Body;
+            model.UserName = post.User.UserName;
+            model.DateCreated = post.DateCreated;
+            model.DateUpdated = post.DateUpdated;
+            model.MediaUrl = post.MediaUrl;
+            model.Comments = post.Comments;
+            model.Slug = post.Slug;
+
+            return View(model);
         }
 
         [HttpGet]
