@@ -41,13 +41,18 @@ namespace Blog.Models.Domain
             DbContext = new ApplicationDbContext();
 
             var slug = Regex.Replace(post.Title, @"[^0-9A-Za-z ,]", "").Replace(" ", "-").ToLower();
-            var slugExists = DbContext.Posts.FirstOrDefault(p => p.Slug == slug);
+            Post slugExists;
 
-            if (slugExists != null || slug == "")
+            do
             {
+                slugExists = DbContext.Posts.FirstOrDefault(p => p.Slug == slug);
+                if (slugExists != null || slug == "")
+                {
                 slug = slug + "-" + Random.Next(1, 10001);
-            }
-            return slug;
+                }
+            } while (slugExists != null);
+
+                return slug;
         }
     }
 }

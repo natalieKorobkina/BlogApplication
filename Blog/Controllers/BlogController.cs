@@ -28,7 +28,9 @@ namespace Blog.Controllers
         {
             ViewBag.Message = "All Posts";
 
-            var model = DbContext.Posts.Select(p => new IndexBlogViewModel
+            var isAdmin = User.IsInRole("Admin");
+
+            var model = DbContext.Posts.Where(p => isAdmin || p.Published).Select(p => new IndexBlogViewModel
             {
                 Id = p.Id,
                 Title = p.Title,
@@ -42,15 +44,7 @@ namespace Blog.Controllers
                 MediaUrl = p.MediaUrl
             }).ToList();
 
-            // filter for non-admins
-            var filteredModel = model.FindAll(p => p.Published == true);
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(DbContext));
-            var currentUser = User.Identity.GetUserId();
-  
-            if (currentUser != null && userManager.IsInRole(currentUser, "admin"))
-                return Search(searchString, model);
-
-            return Search(searchString, filteredModel);
+            return Search(searchString, model);
         }
 
         private ActionResult Search(string searchString, List<IndexBlogViewModel> listForSearch)
@@ -73,6 +67,8 @@ namespace Blog.Controllers
         [Route("Blog/Create")]
         public ActionResult Create()
         {
+            ViewBag.Message = "Add New Post";
+
             return View();
         }
 
@@ -81,8 +77,6 @@ namespace Blog.Controllers
         [Route("Blog/Create")]
         public ActionResult Create(AddUpdateBlogViewModel formData)
         {
-            ViewBag.Message = "Add New Post";
-
             return AddPostToDatabase(null, formData);
         }
 
@@ -220,7 +214,7 @@ namespace Blog.Controllers
 
             if (!ModelState.IsValid)
             {
-                return View();
+                return RedirectToAction(nameof(BlogController.Index));
             }
 
             if (!string.IsNullOrWhiteSpace(slug))
